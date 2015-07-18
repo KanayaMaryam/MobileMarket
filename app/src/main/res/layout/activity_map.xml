@@ -9,5 +9,6 @@ android:layout_height="fill_parent"
         android:layout_height="wrap_content" android:id="@+id/map" tools:context=".MapActivity"
         android:name="com.google.android.gms.maps.SupportMapFragment" />
     <Button android:layout_height="wrap_content" android:layout_width="match_parent"
-        android:text="Create Yard Sale" android:id="@+id/sell" android:textAlignment="center"></Button>
+        android:text="Create Yard Sale" android:id="@+id/sell" android:textAlignment="center"
+        android:onClick="sell"></Button>
 </LinearLayout>
