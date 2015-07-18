@@ -25,12 +25,9 @@ public class MapActivity extends FragmentActivity implements LocationListener{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        /*
+
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_map);
-        setUpMapIfNeeded();
-        */
-        super.onCreate(savedInstanceState);
+        //setUpMapIfNeeded();
         setContentView(R.layout.activity_map);
         map = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map)).getMap();
         map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(47.6589, -117.4250), 10));
@@ -59,7 +56,7 @@ public class MapActivity extends FragmentActivity implements LocationListener{
 
 
     private void setUpMap() {
-        map.addMarker(new MarkerOptions().position(new LatLng(47.6589, 117.4250)).title("Zong"));
+        //map.addMarker(new MarkerOptions().position(new LatLng(47.6589, 117.4250)).title("Zong"));
     }
     @Override
     public void onLocationChanged(Location location) {
@@ -68,6 +65,9 @@ public class MapActivity extends FragmentActivity implements LocationListener{
         CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, 10);
         map.animateCamera(cameraUpdate);
         locationManager.removeUpdates(this);
+        map.addMarker(new MarkerOptions()
+                .position(new LatLng(location.getLatitude(),location.getLongitude())).
+                .title("You are here!"));
 
     }
 
@@ -80,9 +80,6 @@ public class MapActivity extends FragmentActivity implements LocationListener{
     @Override
     public void onProviderDisabled(String provider) { }
 
-    public void swap(){
-        Intent i = new Intent(getApplicationContext(),PostSale.class);
-        startActivity(i);
-    }
+
 }
 
