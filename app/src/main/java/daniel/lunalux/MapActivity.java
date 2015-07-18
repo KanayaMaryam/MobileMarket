@@ -20,7 +20,8 @@ public class MapActivity extends FragmentActivity implements LocationListener{
     //private GoogleMap mMap; // Might be null if Google Play services APK is not available.
     private GoogleMap map;
     private LocationManager locationManager;
-    private static final long MIN_TIME = 400;
+    //minimum time and distance delta for onLocationChange to be called
+    private static final long MIN_TIME = 40;
     private static final float MIN_DISTANCE = 1000;
 
     @Override
@@ -29,8 +30,11 @@ public class MapActivity extends FragmentActivity implements LocationListener{
         super.onCreate(savedInstanceState);
         //setUpMapIfNeeded();
         setContentView(R.layout.activity_map);
+        //set map size to be 3/4th of screen height
+        findViewById(R.id.map).getLayoutParams().height = getWindowManager().getDefaultDisplay().getHeight() * 3 / 4;
         map = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map)).getMap();
-        map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(47.6589, -117.4250), 10));
+        //initially start camera of map pointed at Spokane (placeholder)
+        map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(47.6589, -117.4250), 15));
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, MIN_TIME, MIN_DISTANCE, this);
     }
@@ -61,13 +65,15 @@ public class MapActivity extends FragmentActivity implements LocationListener{
     @Override
     public void onLocationChanged(Location location) {
 
+        //animate camera panning from start location to current location. places marker on current location
         LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
         CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, 10);
         map.animateCamera(cameraUpdate);
         locationManager.removeUpdates(this);
+        //show info window by default, places marker with current location and title "you are here!"
         map.addMarker(new MarkerOptions()
-                .position(new LatLng(location.getLatitude(),location.getLongitude())).
-                .title("You are here!"));
+                .position(new LatLng(location.getLatitude(), location.getLongitude()))
+                .title("You are here!")).showInfoWindow();
 
     }
 
