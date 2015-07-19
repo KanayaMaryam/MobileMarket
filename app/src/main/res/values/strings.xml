@@ -1,6 +1,6 @@
 <resources>
-    <string name="app_name">LunaLux</string>
-    <string name="title_activity_map">Map</string>
+    <string name="app_name">Yard Sale</string>
+    <string name="title_activity_map">Yard Sale</string>
 
 
     <string name="hello_world">Hello world!</string>
