@@ -9,7 +9,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Selling"
+        android:text="Post Yard Sale:"
         android:id="@+id/textView"
         android:textSize="50dp"
         android:singleLine="false"
