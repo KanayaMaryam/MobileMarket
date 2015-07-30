@@ -3,7 +3,9 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:baselineAligned="false"
-    android:id="@+id/activity_sell">
+    android:background="@drawable/SecondScreenBackground"
+    android:id="@+id/activity_sell"
+    android:onClick="takePicture();">
 
 
     <TextView
@@ -14,7 +16,11 @@
         android:textSize="50dp"
         android:singleLine="false"
         android:background="@android:color/holo_blue_dark"
-        android:textColor="#FFFFFF" />
+
+        android:textColor="#FFFFFF"
+        android:layout_alignParentEnd="false"
+        android:layout_alignParentStart="false"
+        android:layout_centerHorizontal="true" />
 
     <TextView
         android:layout_width="88dp"
@@ -111,8 +117,8 @@
         android:onClick="showTimePickerDialog"
         android:id="@+id/button2"
         android:layout_alignTop="@+id/textView7"
-        android:layout_toRightOf="@+id/textView7"
-        android:layout_toEndOf="@+id/textView7" />
+        android:layout_toEndOf="@+id/textView7"
+        android:layout_toRightOf="@+id/textView7" />
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -120,7 +126,8 @@
         android:onClick="showDatePickerDialog"
         android:layout_alignTop="@+id/textView8"
         android:layout_alignRight="@+id/button"
-        android:layout_alignEnd="@+id/button" />
+        android:layout_alignEnd="@+id/button"
+        android:id="@+id/button3" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -154,5 +161,36 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:textSize="20dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Price"
+        android:id="@+id/textView9"
+        android:layout_below="@+id/button2"
+        android:layout_toRightOf="@+id/button"
+        android:layout_toStartOf="@+id/textView5"
+        android:textSize="20dp"
+        android:layout_alignBottom="@+id/textView8"
+        android:layout_toLeftOf="@+id/textView5" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/editText5"
+        android:layout_below="@+id/button2"
+        android:layout_alignRight="@+id/button2"
+        android:layout_alignEnd="@+id/button2"
+        android:layout_toRightOf="@+id/textView9"
+        android:layout_toEndOf="@+id/textView9" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Take a Picture"
+        android:id="@+id/button4"
+        android:layout_below="@+id/button3"
+        android:layout_centerHorizontal="true"
+        android:onClick="takePicture" />
 
 </RelativeLayout>
