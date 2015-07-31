@@ -3,9 +3,12 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:baselineAligned="false"
-    android:background="@drawable/SecondScreenBackground"
     android:id="@+id/activity_sell"
-    android:onClick="takePicture();">
+    >
+    <!--
+    android:background="@drawable/secondscreenbackground"
+    -->
+
 
 
     <TextView

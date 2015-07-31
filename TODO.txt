@@ -1,0 +1,11 @@
+TODO:
+[ ]first screen
+-[ ]pull the location info from the server
+-[ ]create custom markers with that info when activity first launches
+-[ ]create a yardsale object framework to store the information
+[ ]second screen
+-[ ]fix the background
+-[ ]get the calendar to save the date and display it in the activity
+-[ ]get the clock to save the date and display it in activity
+-[ ]get it to send the info to server with json
+ 
