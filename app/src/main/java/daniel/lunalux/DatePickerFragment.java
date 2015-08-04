@@ -30,9 +30,9 @@ public class DatePickerFragment extends DialogFragment
     }
 
     public void onDateSet(DatePicker view, int year, int month, int day) {
-
-        button.setText(month+"/"+day+"/"+year);
+        button.setText((month+1)+"/"+day+"/"+year);
     }
+
     public void setButton(Button button) {
         this.button=button;
 
