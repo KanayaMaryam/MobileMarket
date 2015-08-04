@@ -1,4 +1,3 @@
-//hi daniel
 package daniel.lunalux;
 
 import android.support.v4.app.FragmentActivity;
@@ -8,6 +7,7 @@ import android.content.Intent;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.util.Log;
 import android.view.View;
 
 import com.google.android.gms.maps.GoogleMap;
@@ -16,6 +16,27 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
+
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.params.BasicHttpParams;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedInputStream;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.io.UnsupportedEncodingException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
+import java.nio.charset.Charset;
 
 public class MapActivity extends FragmentActivity implements LocationListener{
 
@@ -26,44 +47,66 @@ public class MapActivity extends FragmentActivity implements LocationListener{
     private static final long MIN_TIME = 40;
     private static final float MIN_DISTANCE = 1000;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
-        //setUpMapIfNeeded();
         setContentView(R.layout.activity_map);
         //set map size to be 3/4th of screen height
         findViewById(R.id.map).getLayoutParams().height = getWindowManager().getDefaultDisplay().getHeight() * 3 / 4;
         map = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map)).getMap();
-        //initially start camera of map pointed at Spokane (placeholder)
-        map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(47.6589, -117.4250), 15));
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, MIN_TIME, MIN_DISTANCE, this);
-    }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        setUpMapIfNeeded();
-    }
-
-    private void setUpMapIfNeeded() {
-        // Do a null check to confirm that we have not already instantiated the map.
-        if (map == null) {
-            // Try to obtain the map from the SupportMapFragment.
-            map = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map))
-                    .getMap();
-            // Check if we were successful in obtaining the map.
-            if (map != null) {
-                setUpMap();
-            }
+        //initially start camera at last known location
+        Location location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+        if (location!=null){
+            double longitude = location.getLongitude();
+            double latitude = location.getLatitude();
+            map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(latitude,longitude),15));
         }
     }
 
-
-    private void setUpMap() {
-        //map.addMarker(new MarkerOptions().position(new LatLng(47.6589, 117.4250)).title("Zong"));
+    //get JSON array from the web api
+    private JSONArray getArray() throws MalformedURLException, IOException, JSONException{
+        InputStream in;
+        URL url;
+        JSONArray array;
+        BufferedReader streamReader;
+        url = new URL("http://yardsalebackendtest.azurewebsites.net/api/location?latitude=1&longitude=1");
+        URLConnection connection = url.openConnection();
+        in = connection.getInputStream();
+        //in = new BufferedInputStream(connection.getInputStream());
+        streamReader = new BufferedReader(new InputStreamReader(in, "UTF-8"));
+        StringBuilder responseStrBuilder = new StringBuilder();
+        String inputStr;
+        while ((inputStr = streamReader.readLine()) != null) {
+            responseStrBuilder.append(inputStr);
+        }
+        String test = responseStrBuilder.toString();
+        array = new JSONArray(test);
+        return array;
     }
+
+    /*
+    //get locations from server and create markers for the given locations.
+    private void getMarkers(GoogleMap map, JSONArray array){
+        try{
+             for (int i = 0; i<array.length(); i++){
+                JSONObject obj = array.getJSONObject(i);
+                String name = obj.getString("Name");
+                double locationLatitude = obj.getDouble("Latitude");
+                double locationLongitude = obj.getDouble("Longitude");
+                double distance = obj.getDouble("Distance");
+                String address = obj.getString("Address");
+                //Latitude, Longitude, Distance, Address
+                map.addMarker(new MarkerOptions().position(new LatLng(locationLatitude, locationLongitude))
+                        .title(name)
+                        .snippet("" + address + "\n" + distance)).showInfoWindow();
+            }
+        } catch (Exception e){}
+    }
+    */
     @Override
     public void onLocationChanged(Location location) {
 
@@ -76,6 +119,7 @@ public class MapActivity extends FragmentActivity implements LocationListener{
         map.addMarker(new MarkerOptions()
                 .position(new LatLng(location.getLatitude(), location.getLongitude()))
                 .title("You are here!")).showInfoWindow();
+        //getMarkers();
 
     }
 
@@ -93,5 +137,8 @@ public class MapActivity extends FragmentActivity implements LocationListener{
         Intent intent = new Intent(this, SellActivity.class);
         startActivity(intent);
     }
+
+
+
 }
 
