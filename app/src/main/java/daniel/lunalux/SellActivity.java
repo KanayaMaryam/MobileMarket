@@ -11,6 +11,7 @@ import android.text.format.DateFormat;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TimePicker;
 import android.net.Uri;
 import android.widget.Toast;
@@ -28,12 +29,14 @@ public class SellActivity extends ActionBarActivity {
     }
 
     public void showTimePickerDialog(View v) {
-        DialogFragment newFragment = new TimePickerFragment();
+        TimePickerFragment newFragment = new TimePickerFragment();
+        newFragment.setButton((Button) v);
         newFragment.show(getFragmentManager(), "timePicker");
     }
 
     public void showDatePickerDialog(View v) {
-        DialogFragment newFragment = new DatePickerFragment();
+        DatePickerFragment newFragment = new DatePickerFragment();
+        newFragment.setButton((Button) v);
         newFragment.show(getFragmentManager(), "datePicker");
     }
 
