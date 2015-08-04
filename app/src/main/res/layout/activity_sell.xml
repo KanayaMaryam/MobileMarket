@@ -4,8 +4,9 @@
     android:layout_height="fill_parent"
     android:baselineAligned="false"
     android:id="@+id/activity_sell"
-    android:background="@drawable/SecondScreenBackground">
+    >
     <!--
+    android:background="@drawable/SecondScreenBackground"
     android:background="@drawable/secondscreenbackground"
     -->
 
@@ -216,7 +217,6 @@
         android:layout_height="wrap_content"
         android:id="@+id/editText6"
         android:width="0dp"
-        android:weight="1"
         android:layout_below="@+id/button4"
         android:layout_alignRight="@+id/button5"
         android:layout_alignEnd="@+id/button5"
