@@ -8,26 +8,18 @@ import android.content.Intent;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.util.Log;
 import android.view.View;
-
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
-
-
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 
@@ -45,6 +37,7 @@ public class MapActivity extends FragmentActivity implements LocationListener{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
+
         //set map size to be 3/4th of screen height
         findViewById(R.id.map).getLayoutParams().height = getWindowManager().getDefaultDisplay().getHeight() * 3 / 4;
         map = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map)).getMap();
@@ -58,19 +51,15 @@ public class MapActivity extends FragmentActivity implements LocationListener{
             double latitude = location.getLatitude();
             map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(latitude,longitude),15));
         }
-        //URL url = new URL("http://yardsalebackendtest.azurewebsites.net/api/location?latitude=1&longitude=1");
         String url = "http://yardsalebackendtest.azurewebsites.net/api/location?latitude=1&longitude=1";
         new LongOperation().execute(url);
     }
 
     //class that extends AsyncTask class. handles the server stuff outside the main thread
-    private class LongOperation  extends AsyncTask <String, Void, Void> {
-
-        JSONArray array;
-        String data;
-
+    private class LongOperation  extends AsyncTask <String, Void, JSONArray> {
         //this function retrieves the JSON data in a string format
-        protected Void doInBackground(String... urls) {
+        protected JSONArray doInBackground(String... urls) {
+            JSONArray array = null;
             try{
                 URL url = new URL(urls[0]);
                 URLConnection connection = url.openConnection();
@@ -82,16 +71,14 @@ public class MapActivity extends FragmentActivity implements LocationListener{
                 while ((inputStr = streamReader.readLine()) != null) {
                     responseStrBuilder.append(inputStr);
                 }
-                data = responseStrBuilder.toString();
+                String data = responseStrBuilder.toString();
+                array = new JSONArray(data);
             } catch (Exception e){}
-            return null;
+            return array;
         }
-
         //updates the saleArray
-        protected void onPostExecute(){
-            try {
-                saleArray = new JSONArray(data);
-            } catch(JSONException e) {}
+        protected void onPostExecute(JSONArray array){
+            saleArray = array;
         }
     }
 
@@ -111,6 +98,7 @@ public class MapActivity extends FragmentActivity implements LocationListener{
         //make the markers if the JSONArray is populated
         if (saleArray != null) {
             try {
+                //TODO: replace this with YardSale objects
                 for (int i = 0; i < saleArray.length(); i++) {
                     JSONObject obj = saleArray.getJSONObject(i);
                     String name = obj.getString("Name");
@@ -121,7 +109,7 @@ public class MapActivity extends FragmentActivity implements LocationListener{
                     //Latitude, Longitude, Distance, Address
                     map.addMarker(new MarkerOptions().position(new LatLng(locationLatitude, locationLongitude))
                             .title(name)
-                            .snippet("" + address + "\n" + distance)).showInfoWindow();
+                            .snippet("" + address + "\n" + distance));
                 }
             } catch (Exception e) {}
         }
