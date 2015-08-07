@@ -2,10 +2,10 @@ TODO:
 [ ]first screen
 -[x]pull the location info from the server
 -[x]create custom markers with that info when activity first launches
---[ ]correct the original url to match current location
+--[x]correct the original url to match current location
 --[ ]line breaks for the info boxes
--[ ]create a yardsale object framework to store the information
---[ ]keep array of YardSale objects instead of JSONArray. replace complex for loop with toString() calls
+-[x]create a yardsale object framework to store the information
+--[x]keep ArrayList of YardSale objects instead of JSONArray
 [ ]second screen
 -[ ]fix the background
 -[ ]get the calendar to save the date and display it in the activity
