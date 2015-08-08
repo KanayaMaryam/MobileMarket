@@ -8,7 +8,8 @@ TODO:
 --[x]keep ArrayList of YardSale objects instead of JSONArray
 [ ]second screen
 -[ ]fix the background
--[ ]get the calendar to save the date and display it in the activity
--[ ]get the clock to save the date and display it in activity
+-[x]get the calendar to save the date and display it in the activity
+-[x]get the clock to save the date and display it in activity
+-[ ]save image from "Take Picture" button
 -[ ]get it to send the info to server with json
  
