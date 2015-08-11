@@ -9,6 +9,7 @@ import android.provider.MediaStore;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.text.format.DateFormat;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -69,15 +70,18 @@ public class SellActivity extends ActionBarActivity {
         }
     }
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {
+        if (requestCode == REQUEST_TAKE_PHOTO) {
             if (resultCode == RESULT_OK) {
                 // Image captured and saved to fileUri specified in the Intent
                 Toast.makeText(this, "Image saved to:\n" +mCurrentPhotoPath, Toast.LENGTH_LONG).show();
+                Log.d("Image", "Image saved to:\n" +mCurrentPhotoPath);
             } else if (resultCode == RESULT_CANCELED) {
                 Toast.makeText(this, "You canceled", Toast.LENGTH_LONG).show();
             } else {
                 Toast.makeText(this, "capture failed", Toast.LENGTH_LONG).show();
             }
+        } else {
+            Toast.makeText(this, "did not work", Toast.LENGTH_LONG).show();
         }
 
     }
