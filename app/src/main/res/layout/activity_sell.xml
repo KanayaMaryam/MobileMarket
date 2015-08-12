@@ -42,14 +42,14 @@
         android:text="City"
         android:id="@+id/textView3"
         android:textSize="20dp"
-        android:layout_below="@+id/editText"
+        android:layout_below="@+id/address"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/editText"
+        android:id="@+id/address"
         android:layout_below="@+id/textView2"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
@@ -59,7 +59,7 @@
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/editText2"
+        android:id="@+id/city"
         android:layout_below="@+id/textView3"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
@@ -81,7 +81,7 @@
         android:text="Zip"
         android:id="@+id/textView5"
         android:textSize="20dp"
-        android:layout_below="@+id/editText"
+        android:layout_below="@+id/address"
         android:layout_toRightOf="@+id/textView4"
         android:layout_toEndOf="@+id/textView4"
         android:layout_marginLeft="30dp"
@@ -90,16 +90,16 @@
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/editText3"
+        android:id="@+id/state"
         android:layout_below="@+id/textView4"
-        android:layout_toRightOf="@+id/editText2"
-        android:layout_toLeftOf="@+id/editText4"
-        android:layout_toStartOf="@+id/editText4" />
+        android:layout_toRightOf="@+id/city"
+        android:layout_toLeftOf="@+id/zip"
+        android:layout_toStartOf="@+id/zip" />
 
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/editText4"
+        android:id="@+id/zip"
         android:layout_below="@+id/textView5"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
@@ -112,9 +112,9 @@
         android:onClick="showTimePickerDialog"
         android:id="@+id/button"
         android:textSize="10dp"
-        android:layout_toLeftOf="@+id/editText3"
-        android:layout_toStartOf="@+id/editText3"
-        android:layout_below="@+id/editText2" />
+        android:layout_toLeftOf="@+id/state"
+        android:layout_toStartOf="@+id/state"
+        android:layout_below="@+id/city" />
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -151,9 +151,9 @@
         android:layout_height="wrap_content"
         android:text="To"
         android:id="@+id/textView7"
-        android:layout_below="@+id/editText3"
-        android:layout_toRightOf="@+id/editText2"
-        android:layout_toStartOf="@+id/editText4"
+        android:layout_below="@+id/state"
+        android:layout_toRightOf="@+id/city"
+        android:layout_toStartOf="@+id/zip"
         android:textSize="20dp"
         android:layout_alignBottom="@+id/textView6"
         android:layout_alignRight="@+id/textView4"
@@ -235,6 +235,29 @@
         android:layout_alignParentEnd="true"
         android:layout_toEndOf="@+id/editText5"
         android:textSize="10dp"
-        android:layout_toRightOf="@+id/editText5" />
+        android:layout_toRightOf="@+id/editText5"
+        android:onClick="submitInfo" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="phone"
+        android:ems="10"
+        android:id="@+id/editText"
+        android:layout_alignParentBottom="true"
+        android:layout_alignLeft="@+id/button3"
+        android:layout_alignStart="@+id/button3" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Phone Number"
+        android:id="@+id/textView11"
+        android:textSize="20dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_toLeftOf="@+id/editText"
+        android:layout_toStartOf="@+id/editText" />
 
 </RelativeLayout>

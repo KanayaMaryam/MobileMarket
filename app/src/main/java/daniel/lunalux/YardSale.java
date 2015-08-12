@@ -3,6 +3,8 @@ package daniel.lunalux;
 /**
  * Class to manage and store yard sale information
  */
+import com.google.android.gms.maps.model.LatLng;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -21,6 +23,15 @@ public class YardSale {
             distance = obj.getDouble("Distance");
             address = obj.getString("Address");
         } catch (JSONException e){}
+    }
+
+    public YardSale(String name, LatLng loc, double distance, String address){
+        this.name = name;
+        locationLatitude = loc.latitude;
+
+        locationLongitude = loc.longitude;
+        this.distance = distance;
+        this.address = address;
     }
 
     public String getName(){
