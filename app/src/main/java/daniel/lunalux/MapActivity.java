@@ -8,6 +8,9 @@ import android.content.Intent;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -38,7 +41,9 @@ public class MapActivity extends FragmentActivity implements LocationListener{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTitle("Seller Locations");
         setContentView(R.layout.activity_map);
+
 
         //set map size to be 3/4th of screen height
         findViewById(R.id.map).getLayoutParams().height = getWindowManager().getDefaultDisplay().getHeight() * 3 / 4;
@@ -122,6 +127,32 @@ public class MapActivity extends FragmentActivity implements LocationListener{
                             .snippet("" + address + "\n" + distance));
                 }
             } catch (Exception e) {}
+        }
+    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu items for use in the action bar
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.actionmenu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle presses on the action bar items
+        switch (item.getItemId()) {
+            case R.id.sell:
+                View anyView = new View(this);
+                item.setActionView(anyView);
+                anyView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        sell(v);
+                    }
+                });
+
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
     }
 

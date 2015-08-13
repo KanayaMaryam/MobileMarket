@@ -38,6 +38,7 @@
             android:name=".SellActivity"
             android:label="@string/title_activity_sell"
             android:parentActivityName=".MapActivity" >
+            android:parentActivityName="com.daniel.lunalux.MapActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="daniel.lunalux.MapActivity" />
