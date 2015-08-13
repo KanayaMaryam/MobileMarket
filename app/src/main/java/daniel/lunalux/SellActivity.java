@@ -37,7 +37,10 @@ public class SellActivity extends ActionBarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
+        getActionBar().setDisplayHomeAsUpEnabled(true);
+        setTitle("Make a Sale");
         setContentView(R.layout.activity_sell);
     }
 
