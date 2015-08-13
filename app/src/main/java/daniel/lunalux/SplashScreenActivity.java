@@ -1,13 +1,13 @@
 package daniel.lunalux;
 
 import android.content.Intent;
-import android.support.v7.app.ActionBarActivity;
+import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
 
-public class SplashScreenActivity extends ActionBarActivity {
+public class SplashScreenActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -18,7 +18,7 @@ public class SplashScreenActivity extends ActionBarActivity {
 
                 try {
                     // Thread will sleep for 5 seconds
-                    sleep(5*1000);
+                    sleep(2*1000);
 
                     // After 5 seconds redirect to another intent
                     Intent i=new Intent(getBaseContext(),MapActivity.class);
