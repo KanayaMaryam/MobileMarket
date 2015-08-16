@@ -8,7 +8,7 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.format.DateFormat;
 import android.util.Log;
@@ -30,7 +30,7 @@ import java.util.Date;
 import java.util.List;
 
 
-public class SellActivity extends ActionBarActivity {
+public class SellActivity extends AppCompatActivity {
     private static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 100;
     private static final int REQUEST_TAKE_PHOTO = 1;
     private String mCurrentPhotoPath;
@@ -39,8 +39,6 @@ public class SellActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        getActionBar().setDisplayHomeAsUpEnabled(true);
-        setTitle("Make a Sale");
         setContentView(R.layout.activity_sell);
     }
 

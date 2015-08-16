@@ -17,10 +17,10 @@ public class SplashScreenActivity extends Activity {
             public void run() {
 
                 try {
-                    // Thread will sleep for 5 seconds
-                    sleep(2*1000);
+                    // Thread will sleep for 1/2 seconds
+                    sleep(500);
 
-                    // After 5 seconds redirect to another intent
+                    // After 1/2 seconds redirect to another intent
                     Intent i=new Intent(getBaseContext(),MapActivity.class);
                     startActivity(i);
 

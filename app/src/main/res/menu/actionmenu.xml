@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-    <item
-        android:id="@+id/sell"
-        android:icon="@drawable/plusicon"
-        app:showAsAction="never"
-        android:title="sell" />
-
+    <item android:id="@+id/sell" android:title="Sell"
+        android:orderInCategory="100" app:showAsAction="always" android:icon="@drawable/plusicon"
+        android:onClick="sell"/>
 </menu>
