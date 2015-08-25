@@ -17,8 +17,10 @@
         android:text="Address"
         android:id="@+id/AddressText"
         android:textSize="20dp"
+        android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="14dp" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -84,33 +86,33 @@
         android:text="Pick Time"
         android:onClick="showTimePickerDialog"
         android:id="@+id/PickTimeFromButton"
-        android:textSize="10dp"
+        android:textSize="12dp"
+
         android:layout_below="@+id/city"
         android:layout_toRightOf="@+id/FromText"
         android:layout_toEndOf="@+id/FromText"
-        android:layout_marginLeft="21dp"
-        android:layout_marginStart="21dp" />
+        android:layout_marginLeft="23dp"
+        android:layout_marginStart="23dp" />
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Pick Time"
         android:onClick="showTimePickerDialog"
         android:id="@+id/PickTimeToButton"
-        android:textSize="10dp"
-        android:layout_above="@+id/PickDateButton"
+        android:textSize="12dp"
+        android:layout_above="@+id/OnText"
         android:layout_toLeftOf="@+id/state"
-        android:layout_toStartOf="@+id/state"
-        android:layout_alignParentEnd="false" />
+        android:layout_toStartOf="@+id/state" />
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Pick Date"
         android:onClick="showDatePickerDialog"
-        android:layout_alignTop="@+id/OnText"
-        android:layout_alignRight="@+id/PickTimeFromButton"
-        android:layout_alignEnd="@+id/PickTimeFromButton"
         android:id="@+id/PickDateButton"
-        android:textSize="10dp" />
+        android:textSize="12dp"
+        android:layout_below="@+id/PickTimeFromButton"
+        android:layout_alignLeft="@+id/PickTimeFromButton"
+        android:layout_alignStart="@+id/PickTimeFromButton" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -118,10 +120,10 @@
         android:text="From"
         android:id="@+id/FromText"
         android:textSize="20dp"
-        android:layout_alignTop="@+id/PickTimeFromButton"
+        android:layout_below="@+id/city"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
-
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="11dp" />
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -129,19 +131,19 @@
         android:id="@+id/textView7"
         android:textSize="20dp"
 
-        android:layout_alignTop="@+id/PickTimeToButton"
+        android:layout_alignTop="@+id/FromText"
         android:layout_centerHorizontal="true" />
->>>>>>> e98aec6c99aad8bd24b6160640da7bf09a9ee450
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Date"
         android:id="@+id/OnText"
         android:textSize="20dp"
+
         android:layout_below="@+id/PickTimeFromButton"
         android:layout_alignParentLeft="true"
-
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="11dp" />
 
 
     <Button
@@ -173,8 +175,9 @@
         android:text="Phone Number"
         android:id="@+id/PhoneNumberText"
         android:textSize="20dp"
-        android:layout_centerVertical="true"
+        android:layout_below="@+id/PickDateButton"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="39dp" />
 
 </RelativeLayout>
