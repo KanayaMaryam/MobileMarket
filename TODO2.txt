@@ -1,0 +1,18 @@
+TODO
+[ ]get app working with the new json framework
+-[ ]pull get the first screen to get stuff from the correct place
+--[ ]start the AsyncTask in the splashscreen if possible
+--[ ]make sure it displays at first
+--[ ]display all the information properly in the map activity
+-[ ]post get the second screen to post its information correctly
+[ ]format second screen text stuff to match the yardsale format
+(this is)
+    {
+       Addressstring,
+       PhoneNumberstring,
+       Latitudedouble,
+       Longitudedouble,
+       StartDateTimeUTC DateTime string, e.g. 2015-08-25T234025.853Z,
+       EndDateTimeUTC DateTime string, e.g. 2015-08-26T044025.853Z
+     }
+-[ ]pretty buttons
