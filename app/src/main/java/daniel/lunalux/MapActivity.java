@@ -1,6 +1,5 @@
 package daniel.lunalux;
 
-import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.os.AsyncTask;
 import android.content.Context;
@@ -11,7 +10,7 @@ import android.location.LocationManager;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
+import android.support.v7.app.AppCompatActivity;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
@@ -20,7 +19,6 @@ import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -29,7 +27,7 @@ import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MapActivity extends FragmentActivity implements LocationListener{
+public class MapActivity extends AppCompatActivity implements LocationListener{
 
     private GoogleMap map;
     private LocationManager locationManager;
@@ -44,9 +42,6 @@ public class MapActivity extends FragmentActivity implements LocationListener{
         setTitle("Seller Locations");
         setContentView(R.layout.activity_map);
 
-
-        //set map size to be 3/4th of screen height
-        findViewById(R.id.map).getLayoutParams().height = getWindowManager().getDefaultDisplay().getHeight() * 3 / 4;
         map = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map)).getMap();
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, MIN_TIME, MIN_DISTANCE, this);
@@ -62,7 +57,7 @@ public class MapActivity extends FragmentActivity implements LocationListener{
             map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(latitude,longitude),15));
             url = "http://yardsalebackendtest.azurewebsites.net/api/location?latitude="+latitude+"&longitude="+longitude;
         }
-        new LongOperation().execute(url);
+        new LongOperation().execute(url); //TODO: could move this operation to the Splash Screen to make it faster
     }
 
     //class that extends AsyncTask class. handles the server stuff outside the main thread
@@ -70,6 +65,7 @@ public class MapActivity extends FragmentActivity implements LocationListener{
         //this function retrieves the JSON data and passes it to onPostExecute in a JSONArray format
         protected JSONArray doInBackground(String... urls) {
             JSONArray array = null;
+
             try{
                 URL url = new URL(urls[0]);
                 URLConnection connection = url.openConnection();
@@ -84,17 +80,21 @@ public class MapActivity extends FragmentActivity implements LocationListener{
                 String data = responseStrBuilder.toString();
                 array = new JSONArray(data);
             } catch (Exception e){}
+
+
             return array;
         }
 
         //updates the saleArray by converting the array of JSON objects here into array of YardSale objects
         protected void onPostExecute(JSONArray array){
-            saleArray = new ArrayList<YardSale>();
-            try {
-                for (int i = 0; i < array.length(); i++) {
-                    saleArray.add(new YardSale(array.getJSONObject(i)));
-                }
-            } catch(JSONException e){}
+            if (array != null){
+                saleArray = new ArrayList<YardSale>();
+                try {
+                    for (int i = 0; i < array.length(); i++) {
+                        saleArray.add(new YardSale(array.getJSONObject(i)));
+                    }
+                } catch(JSONException e){}
+            }
         }
     }
 
@@ -129,31 +129,13 @@ public class MapActivity extends FragmentActivity implements LocationListener{
             } catch (Exception e) {}
         }
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu items for use in the action bar
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.actionmenu, menu);
         return super.onCreateOptionsMenu(menu);
-    }
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle presses on the action bar items
-        switch (item.getItemId()) {
-            case R.id.sell:
-                View anyView = new View(this);
-                item.setActionView(anyView);
-                anyView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        sell(v);
-                    }
-                });
-
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
     }
 
     @Override
@@ -166,7 +148,7 @@ public class MapActivity extends FragmentActivity implements LocationListener{
     public void onProviderDisabled(String provider) { }
 
     //switch to the sell screen
-    public void sell(View view){
+    public void sell(MenuItem item){
         Intent intent = new Intent(this, SellActivity.class);
         startActivity(intent);
     }
