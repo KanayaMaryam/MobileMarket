@@ -1,15 +1,19 @@
 TODO:
-[ ]first screen
--[x]pull the location info from the server
--[x]create custom markers with that info when activity first launches
---[x]correct the original url to match current location
---[ ]line breaks for the info boxes
--[x]create a yardsale object framework to store the information
---[x]keep ArrayList of YardSale objects instead of JSONArray
-[ ]second screen
--[ ]fix the background
--[x]get the calendar to save the date and display it in the activity
--[x]get the clock to save the date and display it in activity
--[ ]save image from "Take Picture" button
--[ ]get it to send the info to server with json
- 
+[ ]get app working with the new json framework
+-[ ]pull: get the first screen to get stuff from the correct place
+--[ ]start the AsyncTask in the splashscreen if possible
+--[ ]make sure it displays at first
+--[ ]display all the information properly in the map activity
+-[ ]post: get the second screen to post its information correctly
+[ ]format second screen text stuff to match the yardsale format
+(this is:)
+    {
+       "Address":string,
+       "PhoneNumber":string,
+       "Latitude":double,
+       "Longitude":double,
+       "StartDateTime":UTC DateTime string, e.g. "2015-08-25T23:40:25.853Z",
+       "EndDateTime":UTC DateTime string, e.g. "2015-08-26T04:40:25.853Z"
+     }
+-[ ]pretty buttons
+

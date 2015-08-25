@@ -57,7 +57,7 @@ public class MapActivity extends AppCompatActivity implements LocationListener{
             map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(latitude,longitude),15));
             url = "http://yardsalebackendtest.azurewebsites.net/api/location?latitude="+latitude+"&longitude="+longitude;
         }
-        new LongOperation().execute(url);
+        new LongOperation().execute(url); //TODO: could move this operation to the Splash Screen to make it faster
     }
 
     //class that extends AsyncTask class. handles the server stuff outside the main thread
