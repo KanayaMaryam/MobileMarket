@@ -10,6 +10,6 @@ TODO:
 -[ ]fix the background
 -[x]get the calendar to save the date and display it in the activity
 -[x]get the clock to save the date and display it in activity
--[ ]save image from "Take Picture" button
+-[x]save image from "Take Picture" button
 -[ ]get it to send the info to server with json
  
