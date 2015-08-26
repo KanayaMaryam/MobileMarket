@@ -2,9 +2,15 @@ package daniel.lunalux;
 
 import android.content.Intent;
 import android.app.Activity;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.Point;
 import android.os.Bundle;
+import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.RelativeLayout;
 
 
 public class SplashScreenActivity extends Activity {
@@ -13,6 +19,7 @@ public class SplashScreenActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
+
         Thread background = new Thread() {
             public void run() {
 
