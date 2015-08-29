@@ -30,8 +30,8 @@ public class YardSale {
     public YardSale(String number, LatLng loc, String address, String start, String end){
         locationLatitude = loc.latitude;
         locationLongitude = loc.longitude;
-        phoneNumber=number;
         this.address = address;
+        phoneNumber=number;
         startTime=start;
         endTime=end;
 
