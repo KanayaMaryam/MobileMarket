@@ -1,11 +1,11 @@
 TODO
 [ ]get app working with the new json framework
--[ ]pull get the first screen to get stuff from the correct place
---[ ]start the AsyncTask in the splashscreen if possible
---[ ]make sure it displays at first
---[ ]display all the information properly in the map activity
+-[x]pull get the first screen to get stuff from the correct place
+--[x]make sure it displays at first
+--[x]display address properly in the map activity
+---[ ]display date and time properly in map activity
 -[ ]post get the second screen to post its information correctly
-[ ]format second screen text stuff to match the yardsale format
+[x]format second screen text stuff to match the yardsale format
 (this is)
     {
        Addressstring,

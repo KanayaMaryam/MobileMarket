@@ -19,6 +19,8 @@ import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -34,7 +36,6 @@ public class MapActivity extends AppCompatActivity implements LocationListener{
     //minimum time and distance delta for onLocationChange to be called
     private static final long MIN_TIME = 40;
     private static final float MIN_DISTANCE = 1000;
-    List<YardSale> saleArray = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +56,9 @@ public class MapActivity extends AppCompatActivity implements LocationListener{
             longitude = location.getLongitude();
             latitude = location.getLatitude();
             map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(latitude,longitude),15));
-            url = "http://yardsalebackendtest.azurewebsites.net/api/location?latitude="+latitude+"&longitude="+longitude;
+            url = "http://yardsalebackendproduction.azurewebsites.net/api/YardSaleEvent?latitude="+latitude+"&longitude="+longitude+"&distance=100000";
+        } else { //default back to seattle
+            url = "http://yardsalebackendproduction.azurewebsites.net/api/YardSaleEvent?latitude="+47.6097+"&longitude="+122.3331+"&distance=100000";
         }
         new LongOperation().execute(url); //TODO: could move this operation to the Splash Screen to make it faster
     }
@@ -65,7 +68,6 @@ public class MapActivity extends AppCompatActivity implements LocationListener{
         //this function retrieves the JSON data and passes it to onPostExecute in a JSONArray format
         protected JSONArray doInBackground(String... urls) {
             JSONArray array = null;
-
             try{
                 URL url = new URL(urls[0]);
                 URLConnection connection = url.openConnection();
@@ -80,20 +82,25 @@ public class MapActivity extends AppCompatActivity implements LocationListener{
                 String data = responseStrBuilder.toString();
                 array = new JSONArray(data);
             } catch (Exception e){}
-
-
             return array;
         }
 
-        //updates the saleArray by converting the array of JSON objects here into array of YardSale objects
+        //updates the map with the markers
         protected void onPostExecute(JSONArray array){
             if (array != null){
-                saleArray = new ArrayList<YardSale>();
                 try {
                     for (int i = 0; i < array.length(); i++) {
-                        saleArray.add(new YardSale(array.getJSONObject(i)));
+                        YardSale obj = new YardSale((JSONObject)array.get(i));
+                        double locationLatitude = obj.getLocationLatitude();
+                        double locationLongitude = obj.getLocationLongitude();
+                        String address = obj.getAddress();
+                        String phoneNumber = obj.getPhoneNumber();
+                        map.addMarker(new MarkerOptions().position(new LatLng(locationLatitude, locationLongitude))
+                                .title(address)
+                                .snippet("Phone: " + phoneNumber));
+                        //TODO: ADD DATE AND TIME INTO THE SNIPPET
                     }
-                } catch(JSONException e){}
+                } catch (Exception e) {}
             }
         }
     }
@@ -111,23 +118,6 @@ public class MapActivity extends AppCompatActivity implements LocationListener{
                 .position(new LatLng(location.getLatitude(), location.getLongitude()))
                 .title("You are here!")).showInfoWindow();
 
-        //make the markers if the ArrayList is populated
-        if (saleArray != null) {
-            try {
-                for (int i = 0; i < saleArray.size(); i++) {
-                    YardSale obj = saleArray.get(i);
-                    String name = obj.getName();
-                    double locationLatitude = obj.getLocationLatitude();
-                    double locationLongitude = obj.getLocationLongitude();
-                    double distance = obj.getDistance();
-                    String address = obj.getAddress();
-                    //Latitude, Longitude, Distance, Address
-                    map.addMarker(new MarkerOptions().position(new LatLng(locationLatitude, locationLongitude))
-                            .title(name)
-                            .snippet("" + address + "\n" + distance));
-                }
-            } catch (Exception e) {}
-        }
     }
 
     @Override
