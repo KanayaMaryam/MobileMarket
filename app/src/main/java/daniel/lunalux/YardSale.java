@@ -22,8 +22,9 @@ public class YardSale {
             locationLatitude = obj.getDouble("Latitude");
             locationLongitude = obj.getDouble("Longitude");
             address = obj.getString("Address");
-            startTime=obj.getString("startTime");
-            endTime=obj.getString("endTime");
+            startTime=obj.getString("StartDateTime");
+            endTime=obj.getString("EndDateTime");
+            phoneNumber=obj.getString("PhoneNumber");
         } catch (JSONException e){}
     }
 
@@ -34,18 +35,12 @@ public class YardSale {
         this.address = address;
         startTime=start;
         endTime=end;
-
     }
 
-
-    public String getAddress(){
-        return address;
-    }
-
+    public String getAddress(){return address; }
     public double getLocationLatitude(){
         return locationLatitude;
     }
-
     public double getLocationLongitude(){
         return locationLongitude;
     }
@@ -58,9 +53,5 @@ public class YardSale {
     public String getEnd(){
         return endTime;
     }
-
-
-
-
-
+    public String getPhoneNumber(){return phoneNumber;}
 }
