@@ -9,34 +9,34 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class YardSale {
-    String name;
+    String phoneNumber;
+    String startTime;
+    String endTime;
+
     double locationLatitude;
     double locationLongitude;
-    double distance;
     String address;
 
     public YardSale(JSONObject obj){
         try {
-            name = obj.getString("Name");
             locationLatitude = obj.getDouble("Latitude");
             locationLongitude = obj.getDouble("Longitude");
-            distance = obj.getDouble("Distance");
             address = obj.getString("Address");
+            startTime=obj.getString("startTime");
+            endTime=obj.getString("endTime");
         } catch (JSONException e){}
     }
 
-    public YardSale(String name, LatLng loc, double distance, String address){
-        this.name = name;
+    public YardSale(String number, LatLng loc, String address, String start, String end){
         locationLatitude = loc.latitude;
-
         locationLongitude = loc.longitude;
-        this.distance = distance;
+        phoneNumber=number;
         this.address = address;
+        startTime=start;
+        endTime=end;
+
     }
 
-    public String getName(){
-        return name;
-    }
 
     public String getAddress(){
         return address;
@@ -49,10 +49,18 @@ public class YardSale {
     public double getLocationLongitude(){
         return locationLongitude;
     }
-
-    public double getDistance(){
-        return distance;
+    public String getNumber(){
+        return phoneNumber;
     }
+    public String getStart(){
+        return startTime;
+    }
+    public String getEnd(){
+        return endTime;
+    }
+
+
+
 
 
 }

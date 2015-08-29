@@ -3,6 +3,7 @@ package daniel.lunalux;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.app.TimePickerDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
@@ -16,6 +17,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.TimePicker;
 import android.net.Uri;
 import android.widget.Toast;
@@ -129,8 +131,29 @@ public class SellActivity extends AppCompatActivity {
         return p1;
     }
     public void submitInfo(){
+        boolean valid=true;
+        String address;
+        String number;
+        double lat;
+        double lon;
+        String start;
+        String end;
+        TextView addressbox=(TextView) findViewById(R.id.AddressText);
+        if(addressbox.getText().toString()==null){
+            valid=false;
+            displayToast("Fill in Address");
+        }
 
 
+
+
+    }
+    public void displayToast(String text){
+        Context context = getApplicationContext();
+        int duration = Toast.LENGTH_SHORT;
+
+        Toast toast = Toast.makeText(context, text, duration);
+        toast.show();
     }
 
 }
