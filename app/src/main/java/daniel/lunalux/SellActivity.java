@@ -131,15 +131,69 @@ public class SellActivity extends AppCompatActivity {
     public void submitInfo(){
         boolean valid=true;
         String address;
+        String city;
+        String state;
         String number;
         double lat;
         double lon;
         String start;
         String end;
+        String date;
         TextView addressbox=(TextView) findViewById(R.id.AddressText);
         if(addressbox.getText().toString()==null){
             valid=false;
             displayToast("Fill in Address");
+        }
+        else{
+            address=addressbox.getText().toString();
+        }
+        TextView citybox=(TextView) findViewById(R.id.CityText);
+        if(citybox.getText().toString()==null&&valid==true){
+            valid=false;
+            displayToast("Fill in City");
+        }
+        else{
+            city=citybox.getText().toString();
+        }
+        TextView statebox=(TextView) findViewById(R.id.StateText);
+        if(statebox.getText().toString()==null&&valid==true){
+            valid=false;
+            displayToast("Fill in State");
+        }
+        else{
+            state=statebox.getText().toString();
+        }
+        TextView numberbox=(TextView) findViewById(R.id.PhoneNumberText);
+        if(numberbox.getText().toString()==null&&valid==true){
+            valid=false;
+            displayToast("Fill in Phone Number");
+        }
+        else{
+            number=numberbox.getText().toString();
+        }
+        Button startbutton=(Button) findViewById(R.id.PickTimeFromButton);
+        if(startbutton.getText().toString().equals("Pick Time")&&valid==true){
+            valid=false;
+            displayToast("Fill in Start Time");
+        }
+        else{
+            start=startbutton.getText().toString();
+        }
+        Button endbutton=(Button) findViewById(R.id.PickTimeToButton);
+        if(endbutton.getText().toString().equals("Pick Time")&&valid==true){
+            valid=false;
+            displayToast("Fill in End Time");
+        }
+        else{
+            end=endbutton.getText().toString();
+        }
+        Button datebutton=(Button) findViewById(R.id.PickDateButton);
+        if(datebutton.getText().toString().equals("Pick Date")&&valid==true){
+            valid=false;
+            displayToast("Fill in Date");
+        }
+        else{
+            date=datebutton.getText().toString();
         }
 
 
