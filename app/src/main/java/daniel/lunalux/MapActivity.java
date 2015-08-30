@@ -39,7 +39,8 @@ import java.util.TimeZone;
 import java.text.SimpleDateFormat;
 
 public class MapActivity extends AppCompatActivity implements LocationListener{
-
+    public static double longitude;
+    public static double latitude;
     private GoogleMap map;
     private LocationManager locationManager;
     //minimum time and distance delta for onLocationChange to be called
@@ -86,8 +87,6 @@ public class MapActivity extends AppCompatActivity implements LocationListener{
 
         //initially start camera at last known location
         Location location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-        double longitude = 0;
-        double latitude = 0;
         String url = "";
         if (location!=null){
             longitude = location.getLongitude();

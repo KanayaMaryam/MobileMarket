@@ -37,6 +37,10 @@ public class YardSale {
         endTime=end;
     }
 
+    public void submit(){
+
+    }
+
     public String getAddress(){return address; }
     public double getLocationLatitude(){
         return locationLatitude;

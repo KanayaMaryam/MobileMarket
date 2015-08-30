@@ -196,10 +196,6 @@ public class SellActivity extends AppCompatActivity {
         else{
             date=datebutton.getText().toString();
         }
-
-
-
-
     }
     public void displayToast(String text){
         Context context = getApplicationContext();

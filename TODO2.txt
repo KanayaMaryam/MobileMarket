@@ -1,18 +1,5 @@
 TODO
-[ ]get app working with the new json framework
--[x]pull get the first screen to get stuff from the correct place
---[x]make sure it displays at first
---[x]display address properly in the map activity
----[ ]display date and time properly in map activity
--[ ]post get the second screen to post its information correctly
-[x]format second screen text stuff to match the yardsale format
-(this is)
-    {
-       Addressstring,
-       PhoneNumberstring,
-       Latitudedouble,
-       Longitudedouble,
-       StartDateTimeUTC DateTime string, e.g. 2015-08-25T234025.853Z,
-       EndDateTimeUTC DateTime string, e.g. 2015-08-26T044025.853Z
-     }
--[ ]pretty buttons
+[ ]convert the time and date back and forth from UTC for the markers and the submit
+[ ]convert the address to a lat/lng in post
+[ ]implement the POST api for the second activity
+[ ]pretty buttons
