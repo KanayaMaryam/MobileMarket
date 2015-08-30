@@ -17,6 +17,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.net.Uri;
@@ -128,7 +129,7 @@ public class SellActivity extends AppCompatActivity {
 
         return p1;
     }
-    public void submitInfo(){
+    public void submitInfo(View v){
         boolean valid=true;
         String address;
         String city;
