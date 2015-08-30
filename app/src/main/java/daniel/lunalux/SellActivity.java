@@ -21,9 +21,7 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.net.Uri;
 import android.widget.Toast;
-
 import com.google.android.gms.maps.model.LatLng;
-
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;

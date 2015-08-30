@@ -1,5 +1,7 @@
 package daniel.lunalux;
 
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.AsyncTask;
 import android.content.Context;
@@ -7,13 +9,19 @@ import android.content.Intent;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -26,8 +34,9 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Date;
+import java.util.TimeZone;
+import java.text.SimpleDateFormat;
 
 public class MapActivity extends AppCompatActivity implements LocationListener{
 
@@ -44,6 +53,34 @@ public class MapActivity extends AppCompatActivity implements LocationListener{
         setContentView(R.layout.activity_map);
 
         map = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map)).getMap();
+        final Context mContext = this;
+        map.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
+            @Override
+            public View getInfoWindow(Marker arg0) {
+                return null;
+            }
+            @Override
+            public View getInfoContents(Marker marker) {
+
+                LinearLayout info = new LinearLayout(mContext);
+                info.setOrientation(LinearLayout.VERTICAL);
+
+                TextView title = new TextView(mContext);
+                title.setTextColor(Color.BLACK);
+                title.setGravity(Gravity.CENTER);
+                title.setTypeface(null, Typeface.BOLD);
+                title.setText(marker.getTitle());
+
+                TextView snippet = new TextView(mContext);
+                snippet.setTextColor(Color.GRAY);
+                snippet.setText(marker.getSnippet());
+
+                info.addView(title);
+                info.addView(snippet);
+
+                return info;
+            }
+        });
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, MIN_TIME, MIN_DISTANCE, this);
 
@@ -89,16 +126,23 @@ public class MapActivity extends AppCompatActivity implements LocationListener{
         protected void onPostExecute(JSONArray array){
             if (array != null){
                 try {
+                    //long ts = System.currentTimeMillis();
+                    //Date localTime = new Date(ts);
+                    //String format = "yyyy/MM/dd HH:mm:ss";
+                    //SimpleDateFormat sdf = new SimpleDateFormat(format);
                     for (int i = 0; i < array.length(); i++) {
                         YardSale obj = new YardSale((JSONObject)array.get(i));
-                        double locationLatitude = obj.getLocationLatitude();
-                        double locationLongitude = obj.getLocationLongitude();
-                        String address = obj.getAddress();
-                        String phoneNumber = obj.getPhoneNumber();
-                        map.addMarker(new MarkerOptions().position(new LatLng(locationLatitude, locationLongitude))
-                                .title(address)
-                                .snippet("Phone: " + phoneNumber));
-                        //TODO: ADD DATE AND TIME INTO THE SNIPPET
+                        //Date startTimeGmt = new Date(obj.getStart());
+                        //TODO: convert the times to local time from GMT
+                        //this thing doesn't work
+                        //Date startTime = new Date(startTimeGmt.getTime() + TimeZone.getDefault().getOffset(localTime.getTime()));
+                        //Date endTimeGmt = new Date(obj.getEnd());
+                        //Date endTime = new Date(endTimeGmt.getTime() + TimeZone.getDefault().getOffset(localTime.getTime()));
+                        map.addMarker(new MarkerOptions().position(new LatLng(obj.getLocationLatitude(), obj.getLocationLongitude()))
+                                .title(obj.getAddress())
+                                .snippet("Phone: " + obj.getPhoneNumber()
+                                         + "\nStart Time: " + obj.getStart() +
+                                          "\nEnd Time: " + obj.getEnd()));
                     }
                 } catch (Exception e) {}
             }
