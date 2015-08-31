@@ -29,6 +29,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 
 public class SellActivity extends AppCompatActivity {
@@ -177,9 +178,7 @@ public class SellActivity extends AppCompatActivity {
             valid=false;
             displayToast("Fill in Start Time");
         }
-        else{
-            start=startbutton.getText().toString();
-        }
+
         Button endbutton=(Button) findViewById(R.id.PickTimeToButton);
         if(endbutton.getText().toString().equals("Pick Time")&&valid==true){
             valid=false;
@@ -193,11 +192,31 @@ public class SellActivity extends AppCompatActivity {
             valid=false;
             displayToast("Fill in Date");
         }
-        else{
-            date=datebutton.getText().toString();
-        }
+
+        TimeZone tz = TimeZone.getTimeZone("UTC");
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm'Z'");
+        df.setTimeZone(tz);
+        Date starttime=new Date();
+        Date endtime=new Date();
+        String[] datechunks=datebutton.getText().toString().split("-");
+        String[] startchunks=startbutton.getText().toString().split(":");
+        String[] endchunks=endbutton.getText().toString().split(":");
+        Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.MONTH, Integer.parseInt(datechunks[1])-1);
+        cal.set(Calendar.DATE, Integer.parseInt(datechunks[2]));
+        cal.set(Calendar.YEAR, Integer.parseInt(datechunks[0]));
+        cal.set(Calendar.HOUR,Integer.parseInt(startchunks[0]));
+        cal.set(Calendar.MINUTE,Integer.parseInt(startchunks[1]));
+        cal.set(Calendar.SECOND,0);
+        starttime = cal.getTime();
+        start = df.format(starttime);
+        cal.set(Calendar.HOUR,Integer.parseInt(endchunks[0]));
+        cal.set(Calendar.MINUTE,Integer.parseInt(endchunks[1]));
+        endtime = cal.getTime();
+        end = df.format(endtime);
+        displayToast(start);
     }
-    public void displayToast(String text){
+    public void displayToast(String text) {
         Context context = getApplicationContext();
         int duration = Toast.LENGTH_SHORT;
 
