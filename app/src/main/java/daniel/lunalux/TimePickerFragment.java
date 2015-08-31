@@ -14,8 +14,7 @@ import java.util.Calendar;
 /**
  * Created by Zong on 7/20/2015.
  */
-public class TimePickerFragment extends DialogFragment
-        implements TimePickerDialog.OnTimeSetListener {
+public class TimePickerFragment extends DialogFragment implements TimePickerDialog.OnTimeSetListener {
     Button button;
 
     @Override
@@ -31,7 +30,11 @@ public class TimePickerFragment extends DialogFragment
     }
 
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-        button.setText(hourOfDay+":"+minute);
+        if (minute < 10){//special case
+            button.setText(hourOfDay+":0"+minute);
+        } else {
+            button.setText(hourOfDay+":"+minute);
+        }
     }
     public void setButton(Button button) {
         this.button=button;

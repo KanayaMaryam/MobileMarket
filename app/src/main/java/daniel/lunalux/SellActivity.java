@@ -132,94 +132,100 @@ public class SellActivity extends AppCompatActivity {
     }
     public void submitInfo(View v){
         boolean valid=true;
-        String address;
-        String city;
-        String state;
-        String number;
-        double lat;
-        double lon;
-        String start;
-        String end;
-        String date;
-        TextView addressbox=(TextView) findViewById(R.id.AddressText);
-        if(addressbox.getText().toString()==null){
+        String address = "";
+        String city = "";
+        String state = "";
+        String number = "";
+        double lat = 47.7717; //default filler values for lat and long
+        double lon = -122.2044;
+        String start = "";
+        String end = "";
+        String date = "";
+        TextView addressbox=(TextView) findViewById(R.id.address);
+        if(addressbox.getText().toString().equals("")&&valid){
             valid=false;
             displayToast("Fill in Address");
         }
         else{
             address=addressbox.getText().toString();
-        }
-        TextView citybox=(TextView) findViewById(R.id.CityText);
-        if(citybox.getText().toString()==null&&valid==true){
-            valid=false;
-            displayToast("Fill in City");
-        }
-        else{
-            city=citybox.getText().toString();
-        }
-        TextView statebox=(TextView) findViewById(R.id.StateText);
-        if(statebox.getText().toString()==null&&valid==true){
-            valid=false;
-            displayToast("Fill in State");
-        }
-        else{
-            state=statebox.getText().toString();
-        }
-        TextView numberbox=(TextView) findViewById(R.id.PhoneNumberText);
-        if(numberbox.getText().toString()==null&&valid==true){
-            valid=false;
-            displayToast("Fill in Phone Number");
-        }
-        else{
-            number=numberbox.getText().toString();
-        }
-        Button startbutton=(Button) findViewById(R.id.PickTimeFromButton);
-        if(startbutton.getText().toString().equals("Pick Time")&&valid==true){
-            valid=false;
-            displayToast("Fill in Start Time");
+            TextView citybox=(TextView) findViewById(R.id.city);
+            if(citybox.getText().toString().equals("")&&valid){
+                valid=false;
+                displayToast("Fill in City");
+            }
+            else{
+                city=citybox.getText().toString();
+                TextView statebox=(TextView) findViewById(R.id.state);
+                if(statebox.getText().toString().equals("")&&valid){
+                    valid=false;
+                    displayToast("Fill in State");
+                }
+                else{
+                    state=statebox.getText().toString();
+                    TextView numberbox=(TextView) findViewById(R.id.phoneNumber);
+                    if(numberbox.getText().toString().equals("")&&valid){
+                        valid=false;
+                        displayToast("Fill in Phone Number");
+                    }
+                    else{
+                        number=numberbox.getText().toString();
+                        Button startbutton=(Button) findViewById(R.id.PickTimeFromButton);
+                        if(startbutton.getText().toString().equals("Pick Time")&&valid){
+                            valid=false;
+                            displayToast("Fill in Start Time");
+                        } else {
+                            start = startbutton.getText().toString();
+                            Button endbutton=(Button) findViewById(R.id.PickTimeToButton);
+                            if(endbutton.getText().toString().equals("Pick Time")&&valid){
+                                valid=false;
+                                displayToast("Fill in End Time");
+                            }
+                            else{
+                                end=endbutton.getText().toString();
+                                Button datebutton=(Button) findViewById(R.id.PickDateButton);
+                                if(datebutton.getText().toString().equals("Pick Date")&&valid){
+                                    valid=false;
+                                    displayToast("Fill in Date");
+                                } else {
+                                    date = datebutton.getText().toString();
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
 
-        Button endbutton=(Button) findViewById(R.id.PickTimeToButton);
-        if(endbutton.getText().toString().equals("Pick Time")&&valid==true){
-            valid=false;
-            displayToast("Fill in End Time");
+        //TODO: convert address to latitude and longitude
+        if (valid){ //convert the text chunks of local time to UTC and submit
+            TimeZone tz = TimeZone.getTimeZone("UTC");
+            SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm'Z'");
+            df.setTimeZone(tz);
+            Date starttime=new Date();
+            Date endtime=new Date();
+            String[] datechunks=date.split("-");
+            String[] startchunks=start.split(":");
+            String[] endchunks=end.split(":");
+            Calendar cal = Calendar.getInstance();
+            cal.set(Calendar.MONTH, Integer.parseInt(datechunks[1])-1);
+            cal.set(Calendar.DATE, Integer.parseInt(datechunks[2])-1);
+            cal.set(Calendar.YEAR, Integer.parseInt(datechunks[0]));
+            cal.set(Calendar.HOUR,Integer.parseInt(startchunks[0]));
+            cal.set(Calendar.MINUTE,Integer.parseInt(startchunks[1]));
+            cal.set(Calendar.SECOND,0);
+            starttime = cal.getTime();
+            start = df.format(starttime);
+            cal.set(Calendar.HOUR,Integer.parseInt(endchunks[0]));
+            cal.set(Calendar.MINUTE,Integer.parseInt(endchunks[1]));
+            endtime = cal.getTime();
+            end = df.format(endtime);
+            //displayToast(start); debug only
+            new YardSale(number, lat,lon, address + ", " + city + " " + state, start, end).submit(); //calls submit
         }
-        else{
-            end=endbutton.getText().toString();
-        }
-        Button datebutton=(Button) findViewById(R.id.PickDateButton);
-        if(datebutton.getText().toString().equals("Pick Date")&&valid==true){
-            valid=false;
-            displayToast("Fill in Date");
-        }
-
-        TimeZone tz = TimeZone.getTimeZone("UTC");
-        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm'Z'");
-        df.setTimeZone(tz);
-        Date starttime=new Date();
-        Date endtime=new Date();
-        String[] datechunks=datebutton.getText().toString().split("-");
-        String[] startchunks=startbutton.getText().toString().split(":");
-        String[] endchunks=endbutton.getText().toString().split(":");
-        Calendar cal = Calendar.getInstance();
-        cal.set(Calendar.MONTH, Integer.parseInt(datechunks[1])-1);
-        cal.set(Calendar.DATE, Integer.parseInt(datechunks[2]));
-        cal.set(Calendar.YEAR, Integer.parseInt(datechunks[0]));
-        cal.set(Calendar.HOUR,Integer.parseInt(startchunks[0]));
-        cal.set(Calendar.MINUTE,Integer.parseInt(startchunks[1]));
-        cal.set(Calendar.SECOND,0);
-        starttime = cal.getTime();
-        start = df.format(starttime);
-        cal.set(Calendar.HOUR,Integer.parseInt(endchunks[0]));
-        cal.set(Calendar.MINUTE,Integer.parseInt(endchunks[1]));
-        endtime = cal.getTime();
-        end = df.format(endtime);
-        displayToast(start);
     }
     public void displayToast(String text) {
         Context context = getApplicationContext();
         int duration = Toast.LENGTH_SHORT;
-
         Toast toast = Toast.makeText(context, text, duration);
         toast.show();
     }

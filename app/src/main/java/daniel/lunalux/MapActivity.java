@@ -92,9 +92,9 @@ public class MapActivity extends AppCompatActivity implements LocationListener{
             longitude = location.getLongitude();
             latitude = location.getLatitude();
             map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(latitude,longitude),15));
-            url = "http://yardsalebackendproduction.azurewebsites.net/api/YardSaleEvent?latitude="+latitude+"&longitude="+longitude+"&distance=100000";
+            url = "http://yardsalebackendproduction.azurewebsites.net/api/YardSaleEvent?latitude="+latitude+"&longitude="+longitude+"&distance=100";
         } else { //default back to seattle
-            url = "http://yardsalebackendproduction.azurewebsites.net/api/YardSaleEvent?latitude="+47.6097+"&longitude="+122.3331+"&distance=100000";
+            url = "http://yardsalebackendproduction.azurewebsites.net/api/YardSaleEvent?latitude="+47.6097+"&longitude="+-122.3331+"&distance=100";
         }
         new LongOperation().execute(url); //TODO: could move this operation to the Splash Screen to make it faster
     }
@@ -131,12 +131,8 @@ public class MapActivity extends AppCompatActivity implements LocationListener{
                     //SimpleDateFormat sdf = new SimpleDateFormat(format);
                     for (int i = 0; i < array.length(); i++) {
                         YardSale obj = new YardSale((JSONObject)array.get(i));
-                        //Date startTimeGmt = new Date(obj.getStart());
-                        //TODO: convert the times to local time from GMT
-                        //this thing doesn't work
-                        //Date startTime = new Date(startTimeGmt.getTime() + TimeZone.getDefault().getOffset(localTime.getTime()));
-                        //Date endTimeGmt = new Date(obj.getEnd());
-                        //Date endTime = new Date(endTimeGmt.getTime() + TimeZone.getDefault().getOffset(localTime.getTime()));
+                        //TODO: convert the times to local time from GMT, just for the marker
+                        //e.g. obj.startToLocal(); and obj.endToLocal();
                         map.addMarker(new MarkerOptions().position(new LatLng(obj.getLocationLatitude(), obj.getLocationLongitude()))
                                 .title(obj.getAddress())
                                 .snippet("Phone: " + obj.getPhoneNumber()

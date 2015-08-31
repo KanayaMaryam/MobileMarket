@@ -10,12 +10,12 @@ import org.json.JSONObject;
 
 public class YardSale {
     String phoneNumber;
-    String startTime;
-    String endTime;
+    String startTime; //standard iso UTC time
+    String endTime; //standard iso UTC time
 
     double locationLatitude;
     double locationLongitude;
-    String address;
+    String address; //full address, including city and state
 
     public YardSale(JSONObject obj){
         try {
@@ -28,9 +28,9 @@ public class YardSale {
         } catch (JSONException e){}
     }
 
-    public YardSale(String number, LatLng loc, String address, String start, String end){
-        locationLatitude = loc.latitude;
-        locationLongitude = loc.longitude;
+    public YardSale(String number, double lat, double lon, String address, String start, String end){
+        locationLatitude = lat;
+        locationLongitude = lon;
         this.address = address;
         phoneNumber=number;
         startTime=start;
