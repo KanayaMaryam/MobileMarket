@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
+import android.os.AsyncTask;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
@@ -23,6 +24,12 @@ import android.widget.TimePicker;
 import android.net.Uri;
 import android.widget.Toast;
 import com.google.android.gms.maps.model.LatLng;
+import java.io.OutputStream;
+import java.net.URL;
+import java.net.HttpURLConnection;
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -136,8 +143,8 @@ public class SellActivity extends AppCompatActivity {
         String city = "";
         String state = "";
         String number = "";
-        double lat = 47.7717; //default filler values for lat and long
-        double lon = -122.2044;
+        double lat = MapActivity.latitude; //default filler values for lat and long
+        double lon = MapActivity.longitude;
         String start = "";
         String end = "";
         String date = "";
@@ -199,7 +206,7 @@ public class SellActivity extends AppCompatActivity {
         //TODO: convert address to latitude and longitude
         if (valid){ //convert the text chunks of local time to UTC and submit
             TimeZone tz = TimeZone.getTimeZone("UTC");
-            SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm'Z'");
+            SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
             df.setTimeZone(tz);
             Date starttime=new Date();
             Date endtime=new Date();
@@ -210,7 +217,7 @@ public class SellActivity extends AppCompatActivity {
             cal.set(Calendar.MONTH, Integer.parseInt(datechunks[1])-1);
             cal.set(Calendar.DATE, Integer.parseInt(datechunks[2]));
             cal.set(Calendar.YEAR, Integer.parseInt(datechunks[0]));
-            cal.set(Calendar.HOUR,Integer.parseInt(startchunks[0])-12); //some kind of weird offset needed to display the correct time
+            cal.set(Calendar.HOUR,Integer.parseInt(startchunks[0]));
             cal.set(Calendar.MINUTE,Integer.parseInt(startchunks[1]));
             cal.set(Calendar.SECOND,0);
             starttime = cal.getTime();
@@ -220,7 +227,9 @@ public class SellActivity extends AppCompatActivity {
             endtime = cal.getTime();
             end = df.format(endtime);
             //displayToast(start); //debug purposes only
-            new YardSale(number, lat,lon, address + ", " + city + " " + state, start, end).submit(); //calls submit
+            YardSale sale = new YardSale(number, lat,lon, address + ", " + city + " " + state, start, end); //calls submit
+            new LongOperation().execute(sale);//start AsyncTask
+            Log.d("SellActivity", "Starting Task");
         }
     }
     public void displayToast(String text) {
@@ -229,5 +238,43 @@ public class SellActivity extends AppCompatActivity {
         Toast toast = Toast.makeText(context, text, duration);
         toast.show();
     }
+    private class LongOperation  extends AsyncTask<YardSale, Void, Void> {
+        protected Void doInBackground(YardSale... sales) {
+            Log.d("SellActivity", "Task Started");
+            YardSale sale = sales[0];
+            try {
+                URL url = new URL("http://yardsalebackendproduction.azurewebsites.net/api/YardSaleEvent");
+                JSONObject obj = new JSONObject();
+                obj.put("Address", sale.getAddress());
+                obj.put("PhoneNumber", sale.getPhoneNumber());
+                obj.put("Latitude", sale.getLocationLatitude());
+                obj.put("Longitude", sale.getLocationLongitude());
+                obj.put("StartDateTime", sale.getStart());
+                obj.put("EndDateTime", sale.getEnd());
+                HttpURLConnection httpCon = (HttpURLConnection) url.openConnection();
+                httpCon.setDoOutput(true);
+                httpCon.setRequestMethod("POST");
+                httpCon.setUseCaches(false);
+                httpCon.setRequestProperty("Accept", "application/json");
+                httpCon.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
+                OutputStream os = httpCon.getOutputStream();
+                os.write(obj.toString().getBytes("UTF-8"));
+                os.flush();
+                Log.d("SellActivity", "HttpResponseCode: " + httpCon.getResponseCode());
+                httpCon.disconnect();
+                Log.d("SellActivity", "Task Completed");
+            } catch (Exception e){
+                Log.d("SellActivity", "Task Failed");
+                e.printStackTrace();
+                //Log.d("SellActivity", "That didn't work");
+            }
+            return null;
+        }
 
+        protected void onPostExecute(Void v){
+            Log.d("SellActivity", "Task Post Execute");
+            Button number = (Button) findViewById(R.id.button5);
+            number.setText("Submitted!");
+        }
+    }
 }

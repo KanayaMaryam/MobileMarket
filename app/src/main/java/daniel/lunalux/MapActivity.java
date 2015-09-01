@@ -92,9 +92,9 @@ public class MapActivity extends AppCompatActivity implements LocationListener{
             longitude = location.getLongitude();
             latitude = location.getLatitude();
             map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(latitude,longitude),15));
-            url = "http://yardsalebackendproduction.azurewebsites.net/api/YardSaleEvent?latitude="+latitude+"&longitude="+longitude+"&distance=100";
+            url = "http://yardsalebackendproduction.azurewebsites.net/api/YardSaleEvent?latitude="+latitude+"&longitude="+longitude+"&distance=1000";
         } else { //default back to seattle
-            url = "http://yardsalebackendproduction.azurewebsites.net/api/YardSaleEvent?latitude="+47.6097+"&longitude="+-122.3331+"&distance=100";
+            url = "http://yardsalebackendproduction.azurewebsites.net/api/YardSaleEvent?latitude="+47.6097+"&longitude="+-122.3331+"&distance=1000";
         }
         new LongOperation().execute(url);
     }
@@ -119,7 +119,9 @@ public class MapActivity extends AppCompatActivity implements LocationListener{
                 String data = responseStrBuilder.toString();
                 array = new JSONArray(data);
 
-            } catch (Exception e){}
+            } catch (Exception e){
+                e.printStackTrace();
+            }
             return array;
         }
 
@@ -127,14 +129,8 @@ public class MapActivity extends AppCompatActivity implements LocationListener{
         protected void onPostExecute(JSONArray array){
             if (array != null){
                 try {
-                    //long ts = System.currentTimeMillis();
-                    //Date localTime = new Date(ts);
-                    //String format = "yyyy/MM/dd HH:mm:ss";
-                    //SimpleDateFormat sdf = new SimpleDateFormat(format);
                     for (int i = 0; i < array.length(); i++) {
                         YardSale obj = new YardSale((JSONObject)array.get(i));
-                        //TODO: convert the times to local time from GMT, just for the marker
-                        //e.g. obj.startToLocal(); and obj.endToLocal();
                         map.addMarker(new MarkerOptions().position(new LatLng(obj.getLocationLatitude(), obj.getLocationLongitude()))
                                 .title(obj.getAddress())
                                 .snippet("Phone: " + obj.getPhoneNumber()
@@ -142,7 +138,7 @@ public class MapActivity extends AppCompatActivity implements LocationListener{
                                           "\nEnd Time: " + obj.endToLocal()));
                     }
                     setTitle("Seller Locations");
-                } catch (Exception e) {}
+                } catch (Exception e) {e.printStackTrace();}
             }
         }
     }
