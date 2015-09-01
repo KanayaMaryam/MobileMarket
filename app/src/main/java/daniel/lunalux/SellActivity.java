@@ -206,11 +206,11 @@ public class SellActivity extends AppCompatActivity {
             String[] datechunks=date.split("-");
             String[] startchunks=start.split(":");
             String[] endchunks=end.split(":");
-            Calendar cal = Calendar.getInstance();
+            Calendar cal = Calendar.getInstance(); //get default time zone and locale calendar
             cal.set(Calendar.MONTH, Integer.parseInt(datechunks[1])-1);
-            cal.set(Calendar.DATE, Integer.parseInt(datechunks[2])-1);
+            cal.set(Calendar.DATE, Integer.parseInt(datechunks[2]));
             cal.set(Calendar.YEAR, Integer.parseInt(datechunks[0]));
-            cal.set(Calendar.HOUR,Integer.parseInt(startchunks[0]));
+            cal.set(Calendar.HOUR,Integer.parseInt(startchunks[0])-12); //some kind of weird offset needed to display the correct time
             cal.set(Calendar.MINUTE,Integer.parseInt(startchunks[1]));
             cal.set(Calendar.SECOND,0);
             starttime = cal.getTime();
@@ -219,7 +219,7 @@ public class SellActivity extends AppCompatActivity {
             cal.set(Calendar.MINUTE,Integer.parseInt(endchunks[1]));
             endtime = cal.getTime();
             end = df.format(endtime);
-            //displayToast(start); debug only
+            //displayToast(start); //debug purposes only
             new YardSale(number, lat,lon, address + ", " + city + " " + state, start, end).submit(); //calls submit
         }
     }

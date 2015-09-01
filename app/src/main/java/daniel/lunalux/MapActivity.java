@@ -50,7 +50,7 @@ public class MapActivity extends AppCompatActivity implements LocationListener{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setTitle("Seller Locations");
+        setTitle("Loading Seller Locations...");
         setContentView(R.layout.activity_map);
 
         map = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map)).getMap();
@@ -96,7 +96,7 @@ public class MapActivity extends AppCompatActivity implements LocationListener{
         } else { //default back to seattle
             url = "http://yardsalebackendproduction.azurewebsites.net/api/YardSaleEvent?latitude="+47.6097+"&longitude="+-122.3331+"&distance=100";
         }
-        new LongOperation().execute(url); //TODO: could move this operation to the Splash Screen to make it faster
+        new LongOperation().execute(url);
     }
 
     //class that extends AsyncTask class. handles the server stuff outside the main thread
@@ -107,16 +107,18 @@ public class MapActivity extends AppCompatActivity implements LocationListener{
             try{
                 URL url = new URL(urls[0]);
                 URLConnection connection = url.openConnection();
-                InputStream in = connection.getInputStream();
+
                 //in = new BufferedInputStream(connection.getInputStream());
-                BufferedReader streamReader = new BufferedReader(new InputStreamReader(in, "UTF-8"));
+                BufferedReader streamReader = new BufferedReader(new InputStreamReader(connection.getInputStream(), "UTF-8"));
                 StringBuilder responseStrBuilder = new StringBuilder();
                 String inputStr;
                 while ((inputStr = streamReader.readLine()) != null) {
                     responseStrBuilder.append(inputStr);
                 }
+                streamReader.close();
                 String data = responseStrBuilder.toString();
                 array = new JSONArray(data);
+
             } catch (Exception e){}
             return array;
         }
@@ -136,9 +138,10 @@ public class MapActivity extends AppCompatActivity implements LocationListener{
                         map.addMarker(new MarkerOptions().position(new LatLng(obj.getLocationLatitude(), obj.getLocationLongitude()))
                                 .title(obj.getAddress())
                                 .snippet("Phone: " + obj.getPhoneNumber()
-                                         + "\nStart Time: " + obj.getStart() +
-                                          "\nEnd Time: " + obj.getEnd()));
+                                         + "\nStart Time: " + obj.startToLocal() +
+                                          "\nEnd Time: " + obj.endToLocal()));
                     }
+                    setTitle("Seller Locations");
                 } catch (Exception e) {}
             }
         }

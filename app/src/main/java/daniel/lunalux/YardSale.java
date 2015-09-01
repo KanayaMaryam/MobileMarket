@@ -8,6 +8,14 @@ import com.google.android.gms.maps.model.LatLng;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.util.Date;
+import java.util.Locale;
+import java.util.TimeZone;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
 public class YardSale {
     String phoneNumber;
     String startTime; //standard iso UTC time
@@ -39,6 +47,26 @@ public class YardSale {
 
     public void submit(){
 
+    }
+
+    public String startToLocal(){
+        DateFormat pstFormat = new SimpleDateFormat("EEE K:mm a, d MMM yyyy", Locale.US);
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
+        Date date = null;
+        try{
+            date = df.parse(startTime);
+        } catch (ParseException e){}
+        return pstFormat.format(date);
+    }
+
+    public String endToLocal(){
+        DateFormat pstFormat = new SimpleDateFormat("EEE K:mm a, d MMM yyyy", Locale.US);
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
+        Date date = null;
+        try{
+            date = df.parse(endTime);
+        } catch (ParseException e){}
+        return pstFormat.format(date);
     }
 
     public String getAddress(){return address; }
