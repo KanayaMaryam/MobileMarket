@@ -1,8 +1,5 @@
 package daniel.lunalux;
 
-import android.app.Dialog;
-import android.app.DialogFragment;
-import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.location.Address;
@@ -12,22 +9,16 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.format.DateFormat;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.TimePicker;
 import android.net.Uri;
 import android.widget.Toast;
 import com.google.android.gms.maps.model.LatLng;
 import java.io.OutputStream;
 import java.net.URL;
 import java.net.HttpURLConnection;
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.File;
@@ -63,6 +54,7 @@ public class SellActivity extends AppCompatActivity {
         newFragment.show(getFragmentManager(), "datePicker");
     }
 
+    //Feature to take pictures not used right now
     public void takePicture(View v){
         // create Intent to take a picture and return control to the calling application
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -83,6 +75,7 @@ public class SellActivity extends AppCompatActivity {
         }
     }
 
+    //Feature to take pictures not used right now
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_TAKE_PHOTO) {
             if (resultCode == RESULT_OK) {
@@ -100,6 +93,7 @@ public class SellActivity extends AppCompatActivity {
 
     }
 
+    //Feature to take pictures not used right now
     private File createImageFile() throws IOException {
         // Create an image file name
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
@@ -137,6 +131,7 @@ public class SellActivity extends AppCompatActivity {
 
         return p1;
     }
+
     public void submitInfo(View v){
         boolean valid=true;
         String address = "";
