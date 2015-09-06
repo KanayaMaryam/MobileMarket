@@ -1,5 +1,3 @@
-TODO
-[ ]convert the time and date back and forth from UTC for the markers and the submit
-[ ]convert the address to a lat/lng in post
-[ ]implement the POST api for the second activity
-[ ]pretty buttons
+TODO (in meeting. pretty much everything is done at this point)
+[ ]finalize images
+[ ]finalize text (title for app)
