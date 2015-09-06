@@ -34,6 +34,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.TimeZone;
 import java.text.SimpleDateFormat;
@@ -41,11 +42,17 @@ import java.text.SimpleDateFormat;
 public class MapActivity extends AppCompatActivity implements LocationListener{
     public static double longitude;
     public static double latitude;
+    public double yourLocationLat;
+    public double yourLocationLong;
+
     private GoogleMap map;
     private LocationManager locationManager;
     //minimum time and distance delta for onLocationChange to be called
     private static final long MIN_TIME = 40;
     private static final float MIN_DISTANCE = 1000;
+    private ArrayList<YardSale> markers = new ArrayList<YardSale>();
+    private ArrayList<Marker> markerobjects = new ArrayList<Marker>();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,6 +98,8 @@ public class MapActivity extends AppCompatActivity implements LocationListener{
         if (location!=null){
             longitude = location.getLongitude();
             latitude = location.getLatitude();
+            yourLocationLat=location.getLongitude();
+            yourLocationLat=location.getLatitude();
             map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(latitude,longitude),15));
             url = "http://yardsalebackendproduction.azurewebsites.net/api/YardSaleEvent?latitude="+latitude+"&longitude="+longitude+"&distance=1000";
         } else { //default back to seattle
@@ -130,12 +139,14 @@ public class MapActivity extends AppCompatActivity implements LocationListener{
             if (array != null){
                 try {
                     for (int i = 0; i < array.length(); i++) {
+
                         YardSale obj = new YardSale((JSONObject)array.get(i));
-                        map.addMarker(new MarkerOptions().position(new LatLng(obj.getLocationLatitude(), obj.getLocationLongitude()))
+                        markers.add(obj);
+                        markerobjects.add(map.addMarker(new MarkerOptions().position(new LatLng(obj.getLocationLatitude(), obj.getLocationLongitude()))
                                 .title(obj.getAddress())
                                 .snippet("Phone: " + obj.getPhoneNumber()
                                          + "\nStart Time: " + obj.startToLocal() +
-                                          "\nEnd Time: " + obj.endToLocal()));
+                                          "\nEnd Time: " + obj.endToLocal())));
                     }
                     setTitle("Seller Locations");
                 } catch (Exception e) {e.printStackTrace();}
@@ -179,6 +190,81 @@ public class MapActivity extends AppCompatActivity implements LocationListener{
     public void sell(MenuItem item){
         Intent intent = new Intent(this, SellActivity.class);
         startActivity(intent);
+    }
+    public void cycleright(View v){
+        double minLatDif=Integer.MAX_VALUE;
+        int minLatInd=-2;
+        for(int i=0; i<markers.size(); i++){
+            double marklat=markers.get(i).getLocationLatitude();
+            if(latitude!=marklat){
+                double dif=marklat-latitude;
+                if(dif>0&&dif<minLatDif){
+                    minLatDif=dif;
+                    minLatInd=i;
+                }
+            }
+        }
+        if(latitude!=yourLocationLat){
+                double dif=yourLocationLat-latitude;
+                if(dif>0&&dif<minLatDif){
+                    minLatDif=dif;
+                    minLatInd=-1;
+                }
+        }
+        if(minLatDif==-2){
+            return;
+        }
+        LatLng latLng=new LatLng(0, 0);
+        if(minLatInd>=0){
+            latLng = new LatLng(markers.get(minLatInd).getLocationLatitude(), markers.get(minLatInd).getLocationLongitude());
+            latitude=markers.get(minLatInd).getLocationLatitude();
+            longitude=markers.get(minLatInd).getLocationLongitude();
+
+        }
+        if(minLatInd==-1){
+            latLng = new LatLng(yourLocationLat, yourLocationLong);
+        }
+        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, 10);
+        map.animateCamera(cameraUpdate);
+        markerobjects.get(minLatInd).showInfoWindow();
+
+    }
+    public void cycleleft(View v){
+        double minLatDif=Integer.MAX_VALUE;
+        int minLatInd=-2;
+        for(int i=0; i<markers.size(); i++){
+            double marklat=markers.get(i).getLocationLatitude();
+            if(latitude!=marklat){
+                double dif=marklat-latitude;
+                if(dif>0&&dif<minLatDif){
+                    minLatDif=dif;
+                    minLatInd=i;
+                }
+            }
+        }
+        if(latitude!=yourLocationLat){
+            double dif=yourLocationLat-latitude;
+            if(dif>0&&dif<minLatDif){
+                minLatDif=dif;
+                minLatInd=-1;
+            }
+        }
+        if(minLatDif==-2){
+            return;
+        }
+        LatLng latLng=new LatLng(0, 0);
+        if(minLatInd>=0){
+            latLng = new LatLng(markers.get(minLatInd).getLocationLatitude(), markers.get(minLatInd).getLocationLongitude());
+            latitude=markers.get(minLatInd).getLocationLatitude();
+            longitude=markers.get(minLatInd).getLocationLongitude();
+
+        }
+        if(minLatInd==-1){
+            latLng = new LatLng(yourLocationLat, yourLocationLong);
+        }
+        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, 10);
+        map.animateCamera(cameraUpdate);
+        markerobjects.get(minLatInd).showInfoWindow();
     }
 
 }
