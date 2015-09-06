@@ -31,12 +31,14 @@
             android:value="@string/google_maps_key" />
 
         <activity
+            android:screenOrientation="portrait"
             android:name=".MapActivity"
             android:label="@string/title_activity_map" >
 
         </activity>
         <activity
             android:name=".SellActivity"
+            android:screenOrientation="portrait"
             android:label="@string/title_activity_sell"
             android:parentActivityName=".MapActivity" >
             <meta-data
@@ -44,6 +46,7 @@
                 android:value="daniel.lunalux.MapActivity" />
         </activity>
         <activity
+            android:screenOrientation="portrait"
             android:name=".SplashScreenActivity"
             android:label="@string/title_activity_splash_sceeen" >
             <intent-filter>
