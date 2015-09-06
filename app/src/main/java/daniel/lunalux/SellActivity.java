@@ -164,6 +164,11 @@ public class SellActivity extends AppCompatActivity {
                 }
                 else{
                     state=statebox.getText().toString();
+                    //use the geocoding to get a latitude and longitude from the address
+                    String fullAddress = address + ", " + city + ", " + state;
+                    LatLng location = getLocationFromAddress(fullAddress);
+                    lat = location.latitude;
+                    lon = location.longitude;
                     TextView numberbox=(TextView) findViewById(R.id.phoneNumber);
                     if(numberbox.getText().toString().equals("")&&valid){
                         valid=false;
