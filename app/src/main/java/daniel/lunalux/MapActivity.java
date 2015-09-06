@@ -26,6 +26,7 @@ import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import java.util.ArrayList;
 
 public class MapActivity extends AppCompatActivity implements LocationListener{
     public static double longitude;
@@ -36,6 +37,10 @@ public class MapActivity extends AppCompatActivity implements LocationListener{
     //minimum time and distance delta for onLocationChange to be called
     private static final long MIN_TIME = 40;
     private static final float MIN_DISTANCE = 1000;
+    private ArrayList<YardSale> markers = new ArrayList<YardSale>();
+    private ArrayList<Marker> markerobjects = new ArrayList<Marker>();
+    private int marker = 0;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +55,7 @@ public class MapActivity extends AppCompatActivity implements LocationListener{
             public View getInfoWindow(Marker arg0) {
                 return null;
             }
+
             @Override
             public View getInfoContents(Marker marker) {
 
@@ -73,20 +79,21 @@ public class MapActivity extends AppCompatActivity implements LocationListener{
             }
         });
         locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, MIN_TIME, MIN_DISTANCE, this);
-        map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(latitude,longitude),15));
-        if (MapActivity.array != null){
+        map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(latitude, longitude), 10));
+        if (MapActivity.array != null) {
             try {
                 for (int i = 0; i < array.length(); i++) {
-                    YardSale obj = new YardSale((JSONObject)array.get(i));
-                    MapActivity.map.addMarker(new MarkerOptions().position(new LatLng(obj.getLocationLatitude(), obj.getLocationLongitude()))
+                    YardSale obj = new YardSale((JSONObject) array.get(i));
+                    markers.add(obj);
+                    markerobjects.add(MapActivity.map.addMarker(new MarkerOptions().position(new LatLng(obj.getLocationLatitude(), obj.getLocationLongitude()))
                             .title(obj.getAddress())
                             .snippet("Phone: " + obj.getPhoneNumber()
                                     + "\nStart Time: " + obj.startToLocal() +
-                                    "\nEnd Time: " + obj.endToLocal()));
+                                    "\nEnd Time: " + obj.endToLocal())));
                 }
-            } catch (Exception e) {e.printStackTrace();}
+            } catch (Exception e) {
+            }
         }
-
     }
 
     @Override
@@ -127,6 +134,30 @@ public class MapActivity extends AppCompatActivity implements LocationListener{
     public void sell(MenuItem item){
         Intent intent = new Intent(this, SellActivity.class);
         startActivity(intent);
+    }
+    public void cycleright(View v){
+        //handle changing the marker number
+        if (marker >= markerobjects.size() - 1){
+            marker = 0;
+        } else {
+            marker++;
+        }
+        YardSale sale = markers.get(marker);
+        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(new LatLng(sale.getLocationLatitude(), sale.getLocationLongitude()), 15);
+        map.animateCamera(cameraUpdate);
+        markerobjects.get(marker).showInfoWindow();
+    }
+    public void cycleleft(View v){
+        //handle changing the marker number
+        if (marker <= 0){
+            marker = markerobjects.size() - 1;
+        } else {
+            marker--;
+        }
+        YardSale sale = markers.get(marker);
+        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(new LatLng(sale.getLocationLatitude(), sale.getLocationLongitude()), 15);
+        map.animateCamera(cameraUpdate);
+        markerobjects.get(marker).showInfoWindow();
     }
 
 }
