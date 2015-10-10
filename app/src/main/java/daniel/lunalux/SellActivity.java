@@ -143,6 +143,7 @@ public class SellActivity extends AppCompatActivity {
         String start = "";
         String end = "";
         String date = "";
+        String description = "";
         TextView addressbox=(TextView) findViewById(R.id.address);
         if(addressbox.getText().toString().equals("")&&valid){
             valid=false;
@@ -195,6 +196,13 @@ public class SellActivity extends AppCompatActivity {
                                     displayToast("Fill in Date");
                                 } else {
                                     date = datebutton.getText().toString();
+                                    TextView descriptionText = (TextView) findViewById(R.id.description);
+                                    if (descriptionText.getText().toString().equals("")&&valid){
+                                        valid = false;
+                                        displayToast("Fill in Description");
+                                    } else {
+                                        description = descriptionText.getText().toString();
+                                    }
                                 }
                             }
                         }
@@ -203,7 +211,6 @@ public class SellActivity extends AppCompatActivity {
             }
         }
 
-        //TODO: convert address to latitude and longitude
         if (valid){ //convert the text chunks of local time to UTC and submit
             TimeZone tz = TimeZone.getTimeZone("UTC");
             SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
@@ -227,7 +234,7 @@ public class SellActivity extends AppCompatActivity {
             endtime = cal.getTime();
             end = df.format(endtime);
             //displayToast(start); //debug purposes only
-            YardSale sale = new YardSale(number, lat,lon, address + ", " + city + " " + state, start, end); //calls submit
+            YardSale sale = new YardSale(number, lat,lon, address + ", " + city + " " + state, start, end, description); //calls submit
             new LongOperation().execute(sale);//start AsyncTask
             Log.d("SellActivity", "Starting Task");
         }
@@ -251,6 +258,7 @@ public class SellActivity extends AppCompatActivity {
                 obj.put("Longitude", sale.getLocationLongitude());
                 obj.put("StartDateTime", sale.getStart());
                 obj.put("EndDateTime", sale.getEnd());
+                obj.put("Description", sale.getDescription());
                 HttpURLConnection httpCon = (HttpURLConnection) url.openConnection();
                 httpCon.setDoOutput(true);
                 httpCon.setRequestMethod("POST");

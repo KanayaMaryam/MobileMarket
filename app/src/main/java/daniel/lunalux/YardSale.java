@@ -20,6 +20,7 @@ public class YardSale {
     double locationLatitude;
     double locationLongitude;
     String address; //full address, including city and state
+    String description;
 
     public YardSale(JSONObject obj){
         try {
@@ -29,16 +30,18 @@ public class YardSale {
             startTime=obj.getString("StartDateTime");
             endTime=obj.getString("EndDateTime");
             phoneNumber=obj.getString("PhoneNumber");
+            description = obj.getString("Description");
         } catch (JSONException e){}
     }
 
-    public YardSale(String number, double lat, double lon, String address, String start, String end){
+    public YardSale(String number, double lat, double lon, String address, String start, String end, String desc){
         locationLatitude = lat;
         locationLongitude = lon;
         this.address = address;
         phoneNumber=number;
         startTime=start;
         endTime=end;
+        description = desc;
     }
 
     public String startToLocal(){
@@ -78,4 +81,5 @@ public class YardSale {
         return endTime;
     }
     public String getPhoneNumber(){return phoneNumber;}
+    public String getDescription(){return description;}
 }

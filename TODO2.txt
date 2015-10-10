@@ -1,3 +1,7 @@
 TODO (in meeting. pretty much everything is done at this point)
 [ ]finalize images
 [ ]finalize text (title for app)
+[ ]refresh button for map
+[ ]finalize layout
+[ ]way to incorporate social media login api
+[ ]way to track users' posts

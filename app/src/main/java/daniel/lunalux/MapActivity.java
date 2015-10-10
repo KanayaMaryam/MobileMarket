@@ -89,7 +89,8 @@ public class MapActivity extends AppCompatActivity implements LocationListener{
                             .title(obj.getAddress())
                             .snippet("Phone: " + obj.getPhoneNumber()
                                     + "\nStart Time: " + obj.startToLocal() +
-                                    "\nEnd Time: " + obj.endToLocal())));
+                                    "\nEnd Time: " + obj.endToLocal() +
+                                    "\nDescription: " + obj.getDescription())));
                 }
             } catch (Exception e) {
             }
